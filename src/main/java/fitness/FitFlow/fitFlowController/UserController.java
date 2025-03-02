@@ -1,4 +1,4 @@
-package fitness.FitFlow.appController;
+package fitness.FitFlow.fitFlowController;
 
 
 import fitness.FitFlow.model.User;
@@ -9,14 +9,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-public class UsserController {
+public class UserController {
 
     @Autowired
     User user;
-
     @Autowired
     UserService userService;
-
 
     @PostMapping("/saveUser")
     public String saveUser(@RequestBody User user){
@@ -42,11 +40,5 @@ public class UsserController {
     public String updateUser(@RequestBody User user){
         return userService.updateUser(user);
     }
-
-
-
-
-
-
 
 }

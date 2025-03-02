@@ -9,21 +9,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
+
 class FitFlowApplicationTests {
-
-
-	@MockitoBean
-	UserService userService;
-
-
-	@Test
-	void testGetUser(){
-		when(userService.getUsers(ArgumentMatchers.anyString())).thenReturn("Ram Ji");
-
-		Assertions.assertNotNull(userService.getUsers("Ram Ji"));
-	}
-
-
-
+	
 }

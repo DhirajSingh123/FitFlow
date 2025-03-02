@@ -1,8 +1,6 @@
 package fitness.FitFlow.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import org.springframework.stereotype.Component;
 
 @Entity
@@ -15,6 +13,11 @@ public class User {
     private String name;
     private String phoneNo;
     private String emailId;
+    private Integer subscriptionId;
+
+//    @ManyToOne
+//    @JoinColumn(name = "subscriptionId", referencedColumnName = "subscriptionId", insertable = false, updatable = false)
+//    private FitnessSubscription subscription;
 
     public int getFitnessId() {
         return fitnessId;
@@ -46,5 +49,13 @@ public class User {
 
     public void setEmailId(String emailId) {
         this.emailId = emailId;
+    }
+
+    public Integer getSubscriptionId() {
+        return subscriptionId;
+    }
+
+    public void setSubscriptionId(Integer subscriptionId) {
+        this.subscriptionId = subscriptionId;
     }
 }
