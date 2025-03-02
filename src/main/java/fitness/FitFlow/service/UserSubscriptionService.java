@@ -45,6 +45,8 @@ public class UserSubscriptionService {
         userSubscription.setName(user.getName());
         userSubscription.setSubscriptionPlan(subscriptionDetail.getSubscriptionPlan());
         userSubscription.setFitnessId(user.getFitnessId());
+        userSubscription.setSubscriptionOffer(subscriptionDetail.getSubscriptionOffer());
+        userSubscription.setGetSubscriptionDetails(subscriptionDetail.getSubscriptionDetails());
 
         return userSubscription;
     }

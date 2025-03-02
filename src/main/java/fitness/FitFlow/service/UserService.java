@@ -1,5 +1,6 @@
 package fitness.FitFlow.service;
 
+import fitness.FitFlow.model.FitnessSubscription;
 import fitness.FitFlow.model.User;
 import fitness.FitFlow.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,22 @@ public class UserService {
     UserRepo userRepo;
 
     public String save(User user) {
-        userRepo.save(user);
-        return "User Saved Successfully!!";
+
+        try{
+            Optional<User> res=userRepo.findById(user.getFitnessId());
+            if(res.isEmpty()){
+                userRepo.save(user);
+            }
+            else {
+                return "Subscription plan already exist please check ID";
+            }
+        }
+        catch (Exception e){
+            return e.getMessage();
+        }
+
+        return "New User added successfully";
+
     }
 
     public List<User> findAllUsers() {
@@ -24,14 +39,25 @@ public class UserService {
 
     }
 
-
     public User getUserById(int id) {
         Optional<User> result = userRepo.findById(id);
         return result.orElseThrow(() -> new RuntimeException("User not found with id: " + id));
     }
 
     public String deleteUserById(int id) {
-        userRepo.deleteById(id);
+        try{
+            Optional<User> res=userRepo.findById(id);
+            if(res.isEmpty()){
+                userRepo.deleteById(id);
+            }
+            else {
+                return "user not found";
+            }
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
         return "User Deleted successfully::" + id;
     }
 

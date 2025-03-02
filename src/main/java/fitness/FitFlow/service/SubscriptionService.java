@@ -25,24 +25,37 @@ public class SubscriptionService {
             }
         }
         catch (Exception e){
-            return "Subscription plan already exist please check ID";
+            return e.getMessage();
         }
 
         return "Subscription plan save successfully";
 
     }
 
-    public List<FitnessSubscription> findAllSubscription() {
+    public List<FitnessSubscription> getAllSubscription() {
         return subscriptionRepo.findAll();
     }
 
-    public Optional<FitnessSubscription> getSubscriptionByFitnessId(int fitnessId) {
-        return subscriptionRepo.findById(fitnessId);
+    public FitnessSubscription getSubscriptionById(int subscriptionId) {
+        try {
+            Optional<FitnessSubscription> res = subscriptionRepo.findById(subscriptionId);
+            return res.orElseThrow(() -> new RuntimeException("Subscription not found with id: " + subscriptionId));
+        }
+        catch (Exception e){
+            return null;
+
+        }
     }
 
-    public String deleteSubscriptionByFitnessId(int fitnessId) {
-        subscriptionRepo.deleteById(fitnessId);
-        return "Subscription deleted";
+    public String deleteSubscriptionByFitnessId(int subscriptionId) {
+        Optional<FitnessSubscription> res = subscriptionRepo.findById(subscriptionId);
+        if(res.isPresent()){
+            subscriptionRepo.deleteById(subscriptionId);
+            return "Subscription deleted";
+        }
+
+
+        return "Subscription not found";
     }
 
     public String updateSubscription(FitnessSubscription fitnessSubscription) {

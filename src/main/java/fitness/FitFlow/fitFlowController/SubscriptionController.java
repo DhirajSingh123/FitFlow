@@ -21,22 +21,22 @@ public class SubscriptionController {
     }
 
     @GetMapping("/getSubscriptions")
-    public List<FitnessSubscription> getAllUsers(){
-        return subscriptionService.findAllSubscription();
+    public List<FitnessSubscription> getAllSubscription(){
+        return subscriptionService.getAllSubscription();
     }
 
     @GetMapping("/getSubscription/{id}")
-    public Optional<FitnessSubscription> getFitnessSubscription(@PathVariable int fitnessId){
-        return subscriptionService.getSubscriptionByFitnessId(fitnessId);
+    public FitnessSubscription getSubscriptionById(@PathVariable int fitnessId){
+        return subscriptionService.getSubscriptionById(fitnessId);
     }
 
     @DeleteMapping("/deleteSubscription/{id}")
-    public String deleteUser(@PathVariable int fitnessId){
+    public String deleteSubscriptionById(@PathVariable int fitnessId){
         return subscriptionService.deleteSubscriptionByFitnessId(fitnessId);
     }
 
     @PutMapping("/updateSubscription")
-    public String updateUser(@RequestBody FitnessSubscription fitnessSubscription){
+    public String updateSubscription(@RequestBody FitnessSubscription fitnessSubscription){
         return subscriptionService.updateSubscription(fitnessSubscription);
     }
 }
