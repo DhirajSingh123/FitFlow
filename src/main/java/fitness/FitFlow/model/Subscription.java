@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Entity
 @Table(name = "subscription")
 @Component
-public class FitnessSubscription {
+public class Subscription {
     @Id
     @Column(name = "subscriptionId")
     private Integer subscriptionId;

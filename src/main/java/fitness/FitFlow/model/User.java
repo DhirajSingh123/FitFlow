@@ -2,6 +2,7 @@ package fitness.FitFlow.model;
 
 import jakarta.persistence.*;
 import org.springframework.stereotype.Component;
+import java.util.Date;
 
 @Entity
 @Table(name = "users")
@@ -9,23 +10,19 @@ import org.springframework.stereotype.Component;
 public class User {
 
     @Id
-    private int fitnessId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-increment ID
+    @Column(name = "id", nullable = false, updatable = false)
+    private int id;
     private String name;
     private String phoneNo;
     private String emailId;
     private Integer subscriptionId;
+    private Date joiningDate;
+    private int amount;
 
-//    @ManyToOne
-//    @JoinColumn(name = "subscriptionId", referencedColumnName = "subscriptionId", insertable = false, updatable = false)
-//    private FitnessSubscription subscription;
-
-    public int getFitnessId() {
-        return fitnessId;
-    }
-
-    public void setFitnessId(int fitnessId) {
-        this.fitnessId = fitnessId;
-    }
+//    public int getId() {
+//        return id;
+//    }
 
     public String getName() {
         return name;
@@ -57,5 +54,20 @@ public class User {
 
     public void setSubscriptionId(Integer subscriptionId) {
         this.subscriptionId = subscriptionId;
+    }
+
+    public Date getJoiningDate() {
+        return joiningDate;
+    }
+
+    public void setJoiningDate(Date joiningDate) {
+        this.joiningDate = joiningDate;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 }

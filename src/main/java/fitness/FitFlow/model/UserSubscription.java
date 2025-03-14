@@ -1,22 +1,17 @@
 package fitness.FitFlow.model;
 
-import org.springframework.stereotype.Component;
+import java.util.Date;
 
 
 public class UserSubscription {
-    private int fitnessId;
     private String name;
+    private String phoneNo;
     private String subscriptionPlan;
     private String subscriptionOffer;
     private String getSubscriptionDetails;
-
-    public int getFitnessId() {
-        return fitnessId;
-    }
-
-    public void setFitnessId(int fitnessId) {
-        this.fitnessId = fitnessId;
-    }
+    private int amountPaid;
+    private int daysRemains;
+    private Date subExpiryDate;
 
     public String getName() {
         return name;
@@ -24,6 +19,14 @@ public class UserSubscription {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPhoneNo() {
+        return phoneNo;
+    }
+
+    public void setPhoneNo(String phoneNo) {
+        this.phoneNo = phoneNo;
     }
 
     public String getSubscriptionPlan() {
@@ -50,14 +53,41 @@ public class UserSubscription {
         this.getSubscriptionDetails = getSubscriptionDetails;
     }
 
+    public int getAmountPaid() {
+        return amountPaid;
+    }
+
+    public void setAmountPaid(int amountPaid) {
+        this.amountPaid = amountPaid;
+    }
+
+    public Date getSubExpiryDate() {
+        return subExpiryDate;
+    }
+
+    public void setSubExpiryDate(Date subExpiryDate) {
+        this.subExpiryDate = subExpiryDate;
+    }
+
+    public int getDaysRemains() {
+        return daysRemains;
+    }
+
+    public void setDaysRemains(int daysRemains) {
+        this.daysRemains = daysRemains;
+    }
+
     @Override
     public String toString() {
         return "UserSubscription{" +
-                "fitnessId=" + fitnessId +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
+                ", phoneNo='" + phoneNo + '\'' +
                 ", subscriptionPlan='" + subscriptionPlan + '\'' +
                 ", subscriptionOffer='" + subscriptionOffer + '\'' +
                 ", getSubscriptionDetails='" + getSubscriptionDetails + '\'' +
+                ", amountPaid=" + amountPaid +
+                ", daysRemains=" + daysRemains +
+                ", subExpiryDate=" + subExpiryDate +
                 '}';
     }
 }

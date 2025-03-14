@@ -1,36 +1,41 @@
 package fitness.FitFlow.service;
 
-import fitness.FitFlow.model.FitnessSubscription;
 import fitness.FitFlow.model.User;
 import fitness.FitFlow.repo.UserRepo;
+import fitness.FitFlow.tools.RestResponse;
+import fitness.FitFlow.tools.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.Date;
 
 @Component
 public class UserService {
 
     @Autowired
     UserRepo userRepo;
+    @Autowired
+    RestResponse res;
 
     public String save(User user) {
 
         try{
-            Optional<User> res=userRepo.findById(user.getFitnessId());
+            Optional<User> res=userRepo.findByPhoneNo(user.getPhoneNo());
             if(res.isEmpty()){
+                Date joiningDate = new Date();
+                user.setJoiningDate(joiningDate);
                 userRepo.save(user);
             }
             else {
-                return "Subscription plan already exist please check ID";
+                return "Phone no already in used";
             }
         }
         catch (Exception e){
             return e.getMessage();
         }
 
-        return "New User added successfully";
+        return "User added successfully";
 
     }
 
@@ -39,38 +44,61 @@ public class UserService {
 
     }
 
-    public User getUserById(int id) {
-        Optional<User> result = userRepo.findById(id);
-        return result.orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+    public RestResponse getUserById(String phone) {
+
+        Optional<User> result = userRepo.findByPhoneNo(phone);
+
+        if(result.isEmpty()){
+            res.setStatusCode(204);
+            res.setStatusMessage("User not found please check user phone no");
+            return res;
+        }
+
+        res.setObject(result.get());
+        res.setStatusCode(200);
+        res.setStatusMessage("Success");
+        return res;
     }
 
-    public String deleteUserById(int id) {
+    public String deleteUserById(String phoneNo) {
         try{
-            Optional<User> res=userRepo.findById(id);
-            if(res.isEmpty()){
-                userRepo.deleteById(id);
+            Optional<User> res=userRepo.findByPhoneNo(phoneNo);
+            if(res.isPresent()){
+                userRepo.deleteUserByPhoneNo(phoneNo);
             }
             else {
-                return "user not found";
+                return "User not registered with this no ";
             }
         }
         catch (Exception e){
             System.out.println(e.getMessage());
         }
 
-        return "User Deleted successfully::" + id;
+        return "User Deleted successfully::" + phoneNo;
     }
 
-    public String updateUser(User user) {
+    public String updateUser(String phoneNo,User updatedUser) {
+        Optional<User> existingUserOptional = userRepo.findByPhoneNo(phoneNo);
 
-        Optional<User> result = userRepo.findById(user.getFitnessId());
+        if (existingUserOptional.isPresent()) {
+            User existingUser = existingUserOptional.get();
 
-        if (result.isPresent()) {
-            userRepo.deleteById(user.getFitnessId());
-            userRepo.save(user);
+            if (updatedUser.getName() != null && !Objects.equals(updatedUser.getName(), "string")) {
+                existingUser.setName(updatedUser.getName());
+            }
+            if (updatedUser.getEmailId() != null && !Objects.equals(updatedUser.getEmailId(), "string") ) {
+                existingUser.setEmailId(updatedUser.getEmailId());
+            }
+
+            if (updatedUser.getPhoneNo() != null && !Objects.equals(updatedUser.getPhoneNo(), "string")) {
+                existingUser.setPhoneNo(updatedUser.getPhoneNo());
+            }
+
+            userRepo.save(existingUser);
+            return "User updated successfully";
         } else {
-            return "User not found for your given details::" + user.getFitnessId();
+            return "User not found for the given phone number";
         }
-        return "User update successfully";
     }
+
 }

@@ -1,12 +1,11 @@
 package fitness.FitFlow.fitFlowController;
 
-import fitness.FitFlow.model.FitnessSubscription;
+import fitness.FitFlow.model.Subscription;
 import fitness.FitFlow.service.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class SubscriptionController {
@@ -16,17 +15,17 @@ public class SubscriptionController {
     SubscriptionService subscriptionService;
 
     @PostMapping("/saveSubscription")
-    public String saveSubscription(@RequestBody FitnessSubscription fitnessSubscription){
-        return subscriptionService.save(fitnessSubscription);
+    public String saveSubscription(@RequestBody Subscription subscription){
+        return subscriptionService.save(subscription);
     }
 
     @GetMapping("/getSubscriptions")
-    public List<FitnessSubscription> getAllSubscription(){
+    public List<Subscription> getAllSubscription(){
         return subscriptionService.getAllSubscription();
     }
 
     @GetMapping("/getSubscription/{id}")
-    public FitnessSubscription getSubscriptionById(@PathVariable int fitnessId){
+    public Subscription getSubscriptionById(@PathVariable int fitnessId){
         return subscriptionService.getSubscriptionById(fitnessId);
     }
 
@@ -36,7 +35,7 @@ public class SubscriptionController {
     }
 
     @PutMapping("/updateSubscription")
-    public String updateSubscription(@RequestBody FitnessSubscription fitnessSubscription){
-        return subscriptionService.updateSubscription(fitnessSubscription);
+    public String updateSubscription(@RequestBody Subscription subscription){
+        return subscriptionService.updateSubscription(subscription);
     }
 }

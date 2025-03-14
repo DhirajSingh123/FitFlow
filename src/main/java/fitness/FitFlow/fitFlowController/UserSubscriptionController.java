@@ -13,10 +13,10 @@ public class UserSubscriptionController {
     @Autowired
     UserSubscriptionService userSubscriptionService;
 
-    @GetMapping("/userSubDetails/{id}")
-    public UserSubscription getUserSubscription(@PathVariable int id){
+    @GetMapping("/userSubDetails/{phoneNo}")
+    public UserSubscription getUserSubscription(@PathVariable String phoneNo){
 
-        return userSubscriptionService.getUserSubscriptionById(id);
+        return userSubscriptionService.getUserSubscriptionById(phoneNo);
     }
 
 
