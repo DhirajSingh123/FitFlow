@@ -3,7 +3,6 @@ package fitness.FitFlow.service;
 import fitness.FitFlow.model.User;
 import fitness.FitFlow.repo.UserRepo;
 import fitness.FitFlow.tools.RestResponse;
-import fitness.FitFlow.tools.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,8 +14,6 @@ public class UserService {
 
     @Autowired
     UserRepo userRepo;
-    @Autowired
-    RestResponse res;
 
     public String save(User user) {
 
@@ -46,6 +43,7 @@ public class UserService {
 
     public RestResponse getUserById(String phone) {
 
+        RestResponse res = new RestResponse();
         Optional<User> result = userRepo.findByPhoneNo(phone);
 
         if(result.isEmpty()){
