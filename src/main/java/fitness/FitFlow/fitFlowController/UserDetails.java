@@ -27,8 +27,9 @@ public class UserDetails {
         return userService.save(user);
     }
 
+
     @GetMapping("/allUsers")
-    public List<User> getAllUsers(){
+    public ResponseEntity<BaseRestResponse<List<User>>> getAllUsers(){
         return userService.findAllUsers();
     }
 

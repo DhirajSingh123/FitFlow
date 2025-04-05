@@ -41,10 +41,21 @@ public class UserService {
 
     }
 
-    public List<User> findAllUsers() {
-        return userRepo.findAll();
+    public ResponseEntity<BaseRestResponse<List<User>>> findAllUsers() {
+        List<User> users = userRepo.findAll();
 
+        BaseRestResponse<List<User>> response = new BaseRestResponse<>();
+        response.setData(users);
+        response.setMessage("Users fetched successfully");
+        response.setStatus("success");
+
+        return ResponseEntity.ok(response);
     }
+
+    
+
+
+
 
     public ResponseEntity<BaseRestResponse<User>> getUserByPhoneNo(String phone) {
 
