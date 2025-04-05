@@ -25,13 +25,13 @@ public class SubscriptionDetails {
     }
 
     @GetMapping("/getSubscription/{id}")
-    public Subscription getSubscriptionById(@PathVariable int fitnessId){
-        return subscriptionService.getSubscriptionById(fitnessId);
+    public Subscription getSubscriptionById(@PathVariable int id){
+        return subscriptionService.getSubscriptionById(id);
     }
 
     @DeleteMapping("/deleteSubscription/{id}")
-    public String deleteSubscriptionById(@PathVariable int fitnessId){
-        return subscriptionService.deleteSubscriptionByFitnessId(fitnessId);
+    public String deleteSubscriptionById(@PathVariable int id){
+        return subscriptionService.deleteSubscriptionByFitnessId(id);
     }
 
     @PutMapping("/updateSubscription")

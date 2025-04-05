@@ -15,13 +15,13 @@ public class SubscriptionService {
 
     public String save(Subscription subscription) {
         try{
-            Optional<Subscription> res=subscriptionRepo.findById(subscription.getSubscriptionId());
-            if(res.isEmpty()){
+//            Optional<Subscription> res=subscriptionRepo.findById(subscription.getSubscriptionId());
+//            if(res.isEmpty()){
                 subscriptionRepo.save(subscription);
-            }
-            else {
-                return "Subscription plan already exist please check ID";
-            }
+//            }
+//            else {
+//                return "Subscription plan already exist please check ID";
+//            }
         }
         catch (Exception e){
             return e.getMessage();

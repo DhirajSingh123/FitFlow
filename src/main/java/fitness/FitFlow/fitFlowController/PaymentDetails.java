@@ -12,7 +12,8 @@ public class PaymentDetails {
     PaymnetService paymentService;
 
     @GetMapping("/totalAmount")
-    public String getTotalAmount(){
+    public Integer
+    getTotalAmount(){
         return paymentService.getTotalAmount();
     }
 
@@ -21,3 +22,4 @@ public class PaymentDetails {
         return paymentService.getAmountByMonth(month);
     }
 }
+

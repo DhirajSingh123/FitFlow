@@ -3,8 +3,10 @@ package fitness.FitFlow.fitFlowController;
 
 import fitness.FitFlow.model.User;
 import fitness.FitFlow.service.UserService;
-import fitness.FitFlow.tools.RestResponse;
+import fitness.FitFlow.utility.BaseRestResponse;
+import fitness.FitFlow.utility.Constents;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +20,10 @@ public class UserDetails {
     UserService userService;
 
     @PostMapping("/saveUser")
-    public String saveUser(@RequestBody User user){
+    public ResponseEntity<BaseRestResponse<String>> saveUser(@RequestBody User user){
+        if (user.getName() == null || user.getEmailId() == null) {
+            return ResponseEntity.badRequest().body(new BaseRestResponse<>(Constents.FAILED, "Missing required fields",403, null));
+        }
         return userService.save(user);
     }
 
@@ -28,8 +33,11 @@ public class UserDetails {
     }
 
     @GetMapping("/getUser/{phoneNo}")
-    public RestResponse getUser(@PathVariable String phoneNo){
-        return userService.getUserById(phoneNo);
+    public ResponseEntity<BaseRestResponse<User>> getUser(@PathVariable String phoneNo){
+        if (phoneNo == null || phoneNo.isEmpty()) {
+            return ResponseEntity.badRequest().body(new BaseRestResponse<>(Constents.FAILED, "Missing required phone no",403, null));
+        }
+        return userService.getUserByPhoneNo(phoneNo);
     }
 
     @DeleteMapping("/deleteUser/{phoneNo}")

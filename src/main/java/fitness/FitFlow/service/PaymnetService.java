@@ -16,14 +16,14 @@ public class PaymnetService {
     @Autowired
     UserService userService;
 
-    public String getTotalAmount() {
+    public Integer getTotalAmount() {
         int total =0;
         List<User> listUser=userService.findAllUsers();
 
         for(User user:listUser){
             total =total+user.getAmount();
         }
-        return "Total Payment are:"+ total;
+        return total;
 
     }
 

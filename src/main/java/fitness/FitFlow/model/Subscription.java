@@ -24,6 +24,10 @@ public class Subscription {
     @Column(name = "subscriptionDetails")
     private String subscriptionDetails;
 
+    private int subscriptionDiscount;
+
+    private int subscriptionPrice;
+
     public Integer getSubscriptionId() {
         return subscriptionId;
     }
@@ -54,5 +58,21 @@ public class Subscription {
 
     public void setSubscriptionDetails(String subscriptionDetails) {
         this.subscriptionDetails = subscriptionDetails;
+    }
+
+    public int getSubscriptionDiscount() {
+        return subscriptionDiscount;
+    }
+
+    public void setSubscriptionDiscount(int subscriptionDiscount) {
+        this.subscriptionDiscount = subscriptionDiscount;
+    }
+
+    public int getSubscriptionPrice() {
+        return subscriptionPrice;
+    }
+
+    public void setSubscriptionPrice(int subscriptionPrice) {
+        this.subscriptionPrice = subscriptionPrice;
     }
 }

@@ -2,8 +2,10 @@ package fitness.FitFlow.service;
 
 import fitness.FitFlow.model.User;
 import fitness.FitFlow.repo.UserRepo;
-import fitness.FitFlow.tools.RestResponse;
+import fitness.FitFlow.utility.BaseRestResponse;
+import fitness.FitFlow.utility.Constents;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -15,7 +17,8 @@ public class UserService {
     @Autowired
     UserRepo userRepo;
 
-    public String save(User user) {
+
+    public ResponseEntity<BaseRestResponse<String>> save(User user) {
 
         try{
             Optional<User> res=userRepo.findByPhoneNo(user.getPhoneNo());
@@ -25,14 +28,16 @@ public class UserService {
                 userRepo.save(user);
             }
             else {
-                return "Phone no already in used";
+                return ResponseEntity.badRequest().body(new BaseRestResponse<>(Constents.FAILED, "Phone No already associated with existing user ",200, null));
             }
         }
         catch (Exception e){
-            return e.getMessage();
+            return ResponseEntity.badRequest().body(new BaseRestResponse<>(Constents.EXCEPTION, "Missing required fields", 204,e.getMessage()));
         }
 
-        return "User added successfully";
+        return ResponseEntity.badRequest().body(new BaseRestResponse<>(Constents.SUCCESS, "User added successfully",200, "User Name:"+user.getName()));
+
+
 
     }
 
@@ -41,21 +46,16 @@ public class UserService {
 
     }
 
-    public RestResponse getUserById(String phone) {
+    public ResponseEntity<BaseRestResponse<User>> getUserByPhoneNo(String phone) {
 
-        RestResponse res = new RestResponse();
         Optional<User> result = userRepo.findByPhoneNo(phone);
+//        if(result.isEmpty()){
+//            return ResponseEntity.badRequest().body(new BaseRestResponse<>(Constents.FAILED, "User not found",200, null));
+//        }
+//
+//        return ResponseEntity.badRequest().body(new BaseRestResponse<>(Constents.SUCCESS, "User found",200, result.get()));
 
-        if(result.isEmpty()){
-            res.setStatusCode(204);
-            res.setStatusMessage("User not found please check user phone no");
-            return res;
-        }
-
-        res.setObject(result.get());
-        res.setStatusCode(200);
-        res.setStatusMessage("Success");
-        return res;
+        return result.map(user -> ResponseEntity.badRequest().body(new BaseRestResponse<>(Constents.SUCCESS, "User found", 200, user))).orElseGet(() -> ResponseEntity.badRequest().body(new BaseRestResponse<>(Constents.FAILED, "User not found", 200, null)));
     }
 
     public String deleteUserById(String phoneNo) {
