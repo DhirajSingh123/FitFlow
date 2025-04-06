@@ -4,6 +4,8 @@ import fitness.FitFlow.model.User;
 import fitness.FitFlow.repo.UserRepo;
 import fitness.FitFlow.utility.BaseRestResponse;
 import fitness.FitFlow.utility.Constents;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -14,6 +16,7 @@ import java.util.Date;
 @Component
 public class UserService {
 
+    private static final Logger log = LoggerFactory.getLogger(UserService.class);
     @Autowired
     UserRepo userRepo;
 
@@ -42,12 +45,21 @@ public class UserService {
     }
 
     public ResponseEntity<BaseRestResponse<List<User>>> findAllUsers() {
-        List<User> users = userRepo.findAll();
-
         BaseRestResponse<List<User>> response = new BaseRestResponse<>();
-        response.setData(users);
-        response.setMessage("Users fetched successfully");
-        response.setStatus("success");
+
+        try{
+            List<User> users = userRepo.findAll();
+            response.setData(users);
+            response.setMessage("Users fetched successfully");
+            response.setStatus("success");
+            response.setStatusCode(200);
+        }
+        catch (Exception e){
+
+            log.info("Something wrong while getting response from the DB");
+
+        }
+
 
         return ResponseEntity.ok(response);
     }
@@ -69,24 +81,26 @@ public class UserService {
         return result.map(user -> ResponseEntity.badRequest().body(new BaseRestResponse<>(Constents.SUCCESS, "User found", 200, user))).orElseGet(() -> ResponseEntity.badRequest().body(new BaseRestResponse<>(Constents.FAILED, "User not found", 200, null)));
     }
 
-    public String deleteUserById(String phoneNo) {
+    public ResponseEntity<BaseRestResponse<String>> deleteUserById(String phoneNo) {
         try{
             Optional<User> res=userRepo.findByPhoneNo(phoneNo);
             if(res.isPresent()){
                 userRepo.deleteUserByPhoneNo(phoneNo);
             }
             else {
-                return "User not registered with this no ";
+                return ResponseEntity.badRequest().body(new BaseRestResponse<>(Constents.FAILED, "User not registered with this no",200, null));
             }
+            return ResponseEntity.ok().body(new BaseRestResponse<>(Constents.SUCCESS, "User Deleted Successfully",200, null));
         }
         catch (Exception e){
             System.out.println(e.getMessage());
         }
 
-        return "User Deleted successfully::" + phoneNo;
+        return ResponseEntity.badRequest().body(new BaseRestResponse<>(Constents.FAILED, "User not registered with this no",200, null));
+
     }
 
-    public String updateUser(String phoneNo,User updatedUser) {
+    public ResponseEntity<BaseRestResponse<String>>  updateUser(String phoneNo,User updatedUser) {
         Optional<User> existingUserOptional = userRepo.findByPhoneNo(phoneNo);
 
         if (existingUserOptional.isPresent()) {
@@ -104,9 +118,9 @@ public class UserService {
             }
 
             userRepo.save(existingUser);
-            return "User updated successfully";
+            return ResponseEntity.badRequest().body(new BaseRestResponse<>(Constents.SUCCESS,"User update successfully",200,null));
         } else {
-            return "User not found for the given phone number";
+            return ResponseEntity.badRequest().body(new BaseRestResponse<>(Constents.SUCCESS,"User not update successfully",200,null));
         }
     }
 

@@ -42,12 +42,12 @@ public class UserDetails {
     }
 
     @DeleteMapping("/deleteUser/{phoneNo}")
-    public String deleteUser(@PathVariable String phoneNo){
+    public ResponseEntity<BaseRestResponse<String>> deleteUser(@PathVariable String phoneNo){
         return userService.deleteUserById(phoneNo);
     }
 
     @PutMapping("/updateUser/{phoneNo}")
-    public String updateUser(@PathVariable String phoneNo,@RequestBody User user){
+    public ResponseEntity<BaseRestResponse<String>> updateUser(@PathVariable String phoneNo,@RequestBody User user){
         return userService.updateUser(phoneNo,user);
     }
 
