@@ -5,6 +5,8 @@ import fitness.FitFlow.repo.UserRepo;
 import fitness.FitFlow.utility.BaseRestResponse;
 import fitness.FitFlow.utility.Constents;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +19,7 @@ public class UserService {
     @Autowired
     UserRepo userRepo;
 
-
+    @CacheEvict(value = "allUser", allEntries = true)
     public ResponseEntity<BaseRestResponse<String>> save(User user) {
 
         try{
@@ -41,6 +43,7 @@ public class UserService {
 
     }
 
+    @Cacheable("allUser")
     public List<User> findAllUsers() {
         return userRepo.findAll();
 
