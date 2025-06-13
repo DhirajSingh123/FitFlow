@@ -28,7 +28,12 @@ public class UserDetails {
     }
 
     @GetMapping("/allUsers")
-    public List<User> getAllUsers(){
+//    public List<User> getAllUsers(){
+//
+//        return userService.findAllUsers();
+//    }
+    public BaseRestResponse getAllUsers(){
+
         return userService.findAllUsers();
     }
 

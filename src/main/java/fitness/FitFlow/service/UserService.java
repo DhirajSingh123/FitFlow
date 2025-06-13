@@ -44,20 +44,30 @@ public class UserService {
     }
 
     @Cacheable("allUser")
-    public List<User> findAllUsers() {
-        return userRepo.findAll();
+    public BaseRestResponse<List<User>>  findAllUsers() {
+        BaseRestResponse response =new BaseRestResponse();
+
+
+        List<User> users = userRepo.findAll();
+        if(users.size()!=0){
+            response.setData(users);
+            response.setStatusCode(200);
+            response.setStatus(Constents.SUCCESS);
+            response.setMessage("Successfully get result");
+
+        }
+        else {
+            response.setStatusCode(400);
+            response.setStatus(Constents.FAILED);
+            response.setMessage("Result not found");
+        }
+
+        return response;
 
     }
 
     public ResponseEntity<BaseRestResponse<User>> getUserByPhoneNo(String phone) {
-
         Optional<User> result = userRepo.findByPhoneNo(phone);
-//        if(result.isEmpty()){
-//            return ResponseEntity.badRequest().body(new BaseRestResponse<>(Constents.FAILED, "User not found",200, null));
-//        }
-//
-//        return ResponseEntity.badRequest().body(new BaseRestResponse<>(Constents.SUCCESS, "User found",200, result.get()));
-
         return result.map(user -> ResponseEntity.badRequest().body(new BaseRestResponse<>(Constents.SUCCESS, "User found", 200, user))).orElseGet(() -> ResponseEntity.badRequest().body(new BaseRestResponse<>(Constents.FAILED, "User not found", 200, null)));
     }
 

@@ -1,6 +1,7 @@
 package fitness.FitFlow.service;
 
 import fitness.FitFlow.model.User;
+import fitness.FitFlow.utility.BaseRestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
@@ -18,9 +19,10 @@ public class PaymnetService {
 
     public Integer getTotalAmount() {
         int total =0;
-        List<User> listUser=userService.findAllUsers();
+        BaseRestResponse<List<User>> listUser=userService.findAllUsers();
 
-        for(User user:listUser){
+        for(User user:listUser.getData()){
+//            total =total+user.getAmount();
             total =total+user.getAmount();
         }
         return total;
@@ -29,12 +31,14 @@ public class PaymnetService {
 
     public String getAmountByMonth(String month) {
         int total = 0;
-        List<User> listUser = userService.findAllUsers();
+        BaseRestResponse<List<User>> listUser = userService.findAllUsers();
 
         // Define the formatter to match "yyyy-MM" (Year-Month format)
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
 
-        for (User user : listUser) {
+
+
+        for (User user : listUser.getData()) {
             if (user.getJoiningDate() != null) {
                 // Convert java.util.Date to LocalDate
                 LocalDate joiningDate = user.getJoiningDate().toInstant()
